@@ -1,7 +1,8 @@
 Contact Management System
 This Contact Management System is designed to facilitate the creation, retrieval, updating, and deletion (CRUD) of contacts associated with users. 
 
-Database Design:-
+Database Design
+
 CONTACT MODEL:-
 1. The Contact model stores information about each contact, including the associated user_id, name, email, and phone. All fields except user_id are required, ensuring essential contact details are provided.
 
