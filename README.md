@@ -1,4 +1,3 @@
-Contact Management System
 This Contact Management System is designed to facilitate the creation, retrieval, updating, and deletion (CRUD) of contacts associated with users. 
 
 Database Design
