@@ -1,6 +1,13 @@
 Contact Management System
 This Contact Management System is designed to facilitate the creation, retrieval, updating, and deletion (CRUD) of contacts associated with users. 
 
+Database Design
+CONTACT MODEL:-
+1. The Contact model stores information about each contact, including the associated user_id, name, email, and phone. All fields except user_id are required, ensuring essential contact details are provided.
+
+USER MODEL:-
+1. The User model manages user data, comprising username, email, and password fields. The email field is unique to each user and is used as a unique identifier for authentication.
+
 FEATURES
 1. Create: Add new contacts associated with a user.
 2. Read: Retrieve contact details and user information.
