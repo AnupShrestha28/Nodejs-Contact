@@ -9,26 +9,20 @@ USER MODEL
 The User model manages user data, comprising username, email, and password fields. The email field is unique to each user and is used as a unique identifier for authentication.
 
 FEATURES
-Create: Add new contacts associated with a user.
-Read: Retrieve contact details and user information.
-Update: Modify contact information or user details.
-Delete: Remove contacts or user accounts from the system.
+1. Create: Add new contacts associated with a user.
+2. Read: Retrieve contact details and user information.
+3. Update: Modify contact information or user details.
+4. Delete: Remove contacts or user accounts from the system.
 
 TECHNOLOGIES USED
-Node.js: Backend environment for running the application.
-Express.js: Web framework for handling routes and requests.
-MongoDB: Database system for storing contact and user data.
-Mongoose: Object Data Modeling (ODM) library for MongoDB in Node.js.
+1. Node.js: Backend environment for running the application.
+2. Express.js: Web framework for handling routes and requests.
+3. MongoDB: Database system for storing contact and user data.
+4. Mongoose: Object Data Modeling (ODM) library for MongoDB in Node.js.
 
-SETUP AND USAGE
-Clone this repository.
-Install dependencies using npm install.
-Set up a MongoDB instance and configure the connection in the application.
-Run the application using npm start.
-
-API ENDPOINTS
-GET /contacts: Retrieve all contacts.
-POST /contacts: Add a new contact.
-GET /contacts/:id: Retrieve a specific contact by ID.
-PUT /contacts/:id: Update a contact by ID.
-DELETE /contacts/:id: Delete a contact by ID.
+API ENDPOINTS:-
+1. GET /contacts: Retrieve all contacts.
+2. POST /contacts: Add a new contact.
+3. GET /contacts/:id: Retrieve a specific contact by ID.
+4. PUT /contacts/:id: Update a contact by ID.
+5. DELETE /contacts/:id: Delete a contact by ID.
