@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Contact = require("../models/contactModel");
+const User = require("../models/userModel");
 
 // @desc Get all contacts
 // @route GET /api/contacts
@@ -13,7 +14,7 @@ const getContacts = asyncHandler(async (req, res) => {
 // @route POST /api/contacts
 // @access private
 const createContact = asyncHandler(async (req, res) => {
-  console.log("The request body is :", req.body);
+  console.log("The request body is:", req.body);
   const { name, email, phone } = req.body;
 
   if (!name || !email || !phone) {
@@ -21,28 +22,60 @@ const createContact = asyncHandler(async (req, res) => {
     throw new Error("All fields are mandatory");
   }
 
-  // Check if email, phone, or name already exists
-  const existingContacts = await Contact.findOne({
-    $or: [{ name }, { email }, { phone }],
-  });
-
-  if (existingContacts) {
-    res.status(400);
-    throw new Error("These contact has been already saved");
-  }
-
   try {
+    // Check if a contact with the same email exists for the current user
+    const existingEmailContact = await Contact.findOne({
+      user_id: req.user.id,
+      email,
+    });
+
+    if (existingEmailContact) {
+      return res.status(400).json({ message: "Email is already saved" });
+    }
+
+    // Check if a contact with the same name exists for the current user
+    const existingNameContact = await Contact.findOne({
+      user_id: req.user.id,
+      name,
+    });
+
+    if (existingNameContact) {
+      return res.status(400).json({ message: "Name is already saved" });
+    }
+
+    // Check if a contact with the same phone exists for the current user
+    const existingPhoneContact = await Contact.findOne({
+      user_id: req.user.id,
+      phone,
+    });
+
+    if (existingPhoneContact) {
+      return res.status(400).json({ message: "Phone is already saved" });
+    }
+
+    // Create the contact if none of the fields already exist
     const contact = await Contact.create({
       name,
       email,
       phone,
       user_id: req.user.id,
     });
+
     res.status(201).json(contact);
+
+    // Update the respective user's contacts array with the new contact reference
+    await User.findByIdAndUpdate(
+      req.user.id,
+      { $push: { contacts: contact._id } },
+      { new: true }
+    );
   } catch (error) {
     console.log(error);
+    res.status(500).json({ error: "Could not create contact" });
   }
 });
+
+
 
 // @desc Get Contact
 // @route GET /api/contacts/:id
