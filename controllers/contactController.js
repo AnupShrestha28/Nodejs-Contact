@@ -15,9 +15,30 @@ const getContacts = asyncHandler(async (req, res) => {
 const createContact = asyncHandler(async (req, res) => {
   console.log("The request body is :", req.body);
   const { name, email, phone } = req.body;
+
   if (!name || !email || !phone) {
     res.status(400);
     throw new Error("All fields are mandatory");
+  }
+
+  // Check if email, phone, or name already exists
+  const existingEmailContact = await Contact.findOne({ email });
+  const existingPhoneContact = await Contact.findOne({ phone });
+  const existingNameContact = await Contact.findOne({ name });
+
+  if (existingEmailContact) {
+    res.status(400);
+    throw new Error("Email is already taken");
+  }
+
+  if (existingPhoneContact) {
+    res.status(400);
+    throw new Error("Phone number already registered");
+  }
+
+  if (existingNameContact) {
+    res.status(400);
+    throw new Error("Name is already registered");
   }
 
   const contact = await Contact.create({
@@ -27,8 +48,10 @@ const createContact = asyncHandler(async (req, res) => {
     user_id: req.user.id,
   });
 
-  res.status(200).json(contact);
+  res.status(201).json(contact);
 });
+
+
 
 // @desc Get Contact
 // @route GET /api/contacts/:id
