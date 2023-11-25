@@ -22,36 +22,27 @@ const createContact = asyncHandler(async (req, res) => {
   }
 
   // Check if email, phone, or name already exists
-  const existingEmailContact = await Contact.findOne({ email });
-  const existingPhoneContact = await Contact.findOne({ phone });
-  const existingNameContact = await Contact.findOne({ name });
-
-  if (existingEmailContact) {
-    res.status(400);
-    throw new Error("Email is already taken");
-  }
-
-  if (existingPhoneContact) {
-    res.status(400);
-    throw new Error("Phone number already registered");
-  }
-
-  if (existingNameContact) {
-    res.status(400);
-    throw new Error("Name is already registered");
-  }
-
-  const contact = await Contact.create({
-    name,
-    email,
-    phone,
-    user_id: req.user.id,
+  const existingContacts = await Contact.findOne({
+    $or: [{ name }, { email }, { phone }],
   });
 
-  res.status(201).json(contact);
+  if (existingContacts) {
+    res.status(400);
+    throw new Error("These contact has been already saved");
+  }
+
+  try {
+    const contact = await Contact.create({
+      name,
+      email,
+      phone,
+      user_id: req.user.id,
+    });
+    res.status(201).json(contact);
+  } catch (error) {
+    console.log(error);
+  }
 });
-
-
 
 // @desc Get Contact
 // @route GET /api/contacts/:id
